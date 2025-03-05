@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1741099647 source:c:\users\nkz\desktop\gamedautien\main.cpp
+	"thongsochung.h"
+
+1741104057 c:\users\nkz\desktop\gamedautien\thongsochung.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+
+1741108239 source:c:\users\nkz\desktop\gamedautien\macode.cpp
+	"thongsochung.h"
+	<iostream>
+
