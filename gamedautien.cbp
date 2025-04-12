@@ -32,7 +32,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="foods.cpp" />
+		<Unit filename="foods.h" />
+		<Unit filename="ghost.cpp" />
+		<Unit filename="ghost.h" />
+		<Unit filename="macode.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="sucmanh.cpp" />
+		<Unit filename="sucmanh.h" />
 		<Unit filename="thongsochung.h" />
 		<Extensions />
 	</Project>

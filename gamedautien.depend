@@ -1,12 +1,52 @@
 # depslib dependency file v1.0
-1741099647 source:c:\users\nkz\desktop\gamedautien\main.cpp
+1744261066 source:c:\users\nkz\desktop\gamedautien\main.cpp
 	"thongsochung.h"
+	"foods.h"
+	"ghost.h"
+	<iostream>
 
-1741104057 c:\users\nkz\desktop\gamedautien\thongsochung.h
-	<SDL2/SDL.h>
-	<SDL2/SDL_image.h>
+1744125814 c:\users\nkz\desktop\gamedautien\thongsochung.h
+	<vector>
+	<algorithm>
+	<cmath>
+	<string>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+	"foods.h"
+	"ghost.h"
 
-1741108239 source:c:\users\nkz\desktop\gamedautien\macode.cpp
+1744260523 source:c:\users\nkz\desktop\gamedautien\macode.cpp
 	"thongsochung.h"
 	<iostream>
+
+1741239203 source:c:\users\nkz\desktop\gamedautien\map.cpp
+
+1744110722 source:c:\users\nkz\desktop\gamedautien\foods.cpp
+	"thongsochung.h"
+	"foods.h"
+	<iostream>
+
+1741421561 c:\users\nkz\desktop\gamedautien\loadimage.h
+	<SDL.h>
+
+1742916505 c:\users\nkz\desktop\gamedautien\foods.h
+	<SDL.h>
+	<vector>
+
+1741422316 source:c:\users\nkz\desktop\gamedautien\loadimage.cpp
+	"loadimage.h"
+	<SDL_image.h>
+	<SDL.h>
+	<iostream>
+
+1744260513 source:c:\users\nkz\desktop\gamedautien\ghost.cpp
+	"thongsochung.h"
+	<iostream>
+	"ghost.h"
+	"foods.h"
+
+1744260513 c:\users\nkz\desktop\gamedautien\ghost.h
+	<SDL.h>
 
