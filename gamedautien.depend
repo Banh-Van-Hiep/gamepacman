@@ -5,7 +5,7 @@
 	"ghost.h"
 	<iostream>
 
-1744125814 c:\users\nkz\desktop\gamedautien\thongsochung.h
+1745232202 c:\users\nkz\desktop\gamedautien\thongsochung.h
 	<vector>
 	<algorithm>
 	<cmath>
@@ -16,14 +16,16 @@
 	<SDL_mixer.h>
 	"foods.h"
 	"ghost.h"
+	"sucmanh.h"
 
-1744260523 source:c:\users\nkz\desktop\gamedautien\macode.cpp
+1745312577 source:c:\users\nkz\desktop\gamedautien\macode.cpp
 	"thongsochung.h"
 	<iostream>
+	"sucmanh.h"
 
 1741239203 source:c:\users\nkz\desktop\gamedautien\map.cpp
 
-1744110722 source:c:\users\nkz\desktop\gamedautien\foods.cpp
+1745231938 source:c:\users\nkz\desktop\gamedautien\foods.cpp
 	"thongsochung.h"
 	"foods.h"
 	<iostream>
@@ -41,12 +43,21 @@
 	<SDL.h>
 	<iostream>
 
-1744260513 source:c:\users\nkz\desktop\gamedautien\ghost.cpp
+1745416628 source:c:\users\nkz\desktop\gamedautien\ghost.cpp
 	"thongsochung.h"
 	<iostream>
 	"ghost.h"
 	"foods.h"
 
-1744260513 c:\users\nkz\desktop\gamedautien\ghost.h
+1744441023 c:\users\nkz\desktop\gamedautien\ghost.h
 	<SDL.h>
+
+1745230830 c:\users\nkz\desktop\gamedautien\sucmanh.h
+	<SDL.h>
+
+1745231904 source:c:\users\nkz\desktop\gamedautien\sucmanh.cpp
+	"sucmanh.h"
+	<cstdlib>
+	"thongsochung.h"
+	<iostream>
 

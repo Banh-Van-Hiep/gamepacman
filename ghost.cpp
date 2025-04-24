@@ -80,14 +80,15 @@ void Ghost::ve(SDL_Renderer* renderer, SDL_Texture* ghosttexture)
     SDL_RenderCopy(renderer, ghosttexture, &numframe[framehientai], &rectghost);
 }
 
-int Ghost::winORlost(SDL_Rect pacman, int &mang)
+int Ghost::winORlost(SDL_Rect pacman, int &mang, int &slc)
 {
         if(SDL_HasIntersection(&rectghost,&pacman))
         {
             Mix_PlayChannel(2, amthanhdie, 0);
-            mang--;
+            slc++;
+            std::cout<<slc;
         }
-        return mang;
+        return slc;
 }
 
 void Ghost::capnhatvitri(SDL_Rect pacman)
@@ -127,9 +128,9 @@ void Ghost::vt(int X, int Y)
 }
 void Ghost::changewaitingtime(int &waitingtime1, const Foods &food)
 {
-    if (food.food.size() <= 20)
+    if (food.food.size() <= 200)
     {
-        waitingtime2 = 15;
+        waitingtime2 = 14;
         waitingtime1 = 10;
     }
 }

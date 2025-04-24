@@ -50,7 +50,7 @@ void Foods::checkeating(SDL_Rect pacman)
 }
 bool Foods::winORlost()
 {
-    if(food.size()==0) return true;
+    if(food.size()<=100) return true;
     return false;
 }
 

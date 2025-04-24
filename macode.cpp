@@ -1,6 +1,11 @@
 #include "thongsochung.h"
-
 #include<iostream>
+#include "sucmanh.h"
+
+SucManh sucmanhTangToc;
+SucManh sucmanhTangMang;
+SDL_Texture* textureTangToc = nullptr;
+SDL_Texture* textureTangMang = nullptr;
 bool choitiep = true;
 int tgconlai = 0;
 int solanchet = 0;
@@ -36,8 +41,8 @@ Game::Game()
     amthanhcho = nullptr;
 
     running = false;
-    tocdo = 2;
-    timebom = 10000;
+    tocdo = 3;
+    timebom = 20000;
     waitingtime1 = 15;
 }
 Game::~Game()
@@ -140,6 +145,13 @@ bool Game::khoitao(const char* tieude, int rong, int cao)
         std::cout<<"loi tai anh lose.png"<<IMG_GetError()<<std::endl;
         return false;
     }
+    textureTangToc = loadtexture("tangtoc.png");
+    textureTangMang = loadtexture("tangmang.png");
+    if (!textureTangToc||!textureTangMang)
+    {
+        std::cout << "lỗi tải suc manh: " << IMG_GetError() << std::endl;
+        return false;
+    }
 
     Ltexture = loadtexture("L.png");
     Stexture = loadtexture("S.png");
@@ -147,6 +159,7 @@ bool Game::khoitao(const char* tieude, int rong, int cao)
 
     amThanhNo = Mix_LoadWAV("bom.mp3");
     amthanhan = Mix_LoadWAV("eat.mp3");
+    amthanhansucmanh = Mix_LoadWAV("sucmanh.mp3");
     amthanhgame = Mix_LoadMUS("game.mp3");
     amthanhdie = Mix_LoadWAV("die.mp3");
     amthanhwin = Mix_LoadMUS("win.mp3");
@@ -272,40 +285,59 @@ void Game::xulysukien()
 //cap nhat trang thai
 void Game::capnhat()
 {
+    hoichieu();
+    Uint32 now = SDL_GetTicks();
+
+    sucmanhTangToc.capNhat(now);
+    sucmanhTangMang.capNhat(now);
+
+    sucmanhTangToc.xuLyAn(pacman, now);
+    if (sucmanhTangToc.daAn()) {
+        tocdo = 3;
+    } else {
+        tocdo = 2;
+    }
+    sucmanhTangMang.xuLyAn(pacman, now);
+    if (sucmanhTangMang.daAn()) {
+        if (mang < 5) {
+            mang++;
+        }
+        sucmanhTangMang.sauKhiAn(now);
+    }
     foods.checkeating(pacman);
     for (auto& g : ghosts)
     {
         g.changewaitingtime(waitingtime1, foods);
+        g.capnhatvitri(pacman);
     }
-    if (!Mix_PlayingMusic())
-    {
+    if (!Mix_PlayingMusic()) {
         Mix_PlayMusic(amthanhgame, -1);
     }
-    hoichieu();
-    if(checkno)
+    if (checkno)
     {
-        if((SDL_GetTicks() - batdauno) > 400)
+        if ((SDL_GetTicks() - batdauno) > 400)
         {
             checkno = false;
         }
     }
-
-    for(Ghost &g : ghosts) g.capnhatvitri(pacman);
-    if(foods.winORlost())
+    if (foods.winORlost())
     {
         Mix_HaltMusic();
         SDL_Event e;
         velenmanhinh();
+
         bool wait = true;
-        while(wait)
+        while (wait)
         {
-            while(SDL_PollEvent(&e))
+            while (SDL_PollEvent(&e))
             {
-                if(e.type == SDL_QUIT||e.type == SDL_KEYDOWN) wait = false;
+                if (e.type == SDL_QUIT || e.type == SDL_KEYDOWN)
+                    wait = false;
             }
         }
+
         choitiep = false;
-        running  = false;
+        running = false;
     }
 }
 //diem
@@ -424,6 +456,15 @@ void Game::velenmanhinh()
         for(Ghost &g : ghosts)
         g.ve(renderer,ghosttexture);
     }
+    if (textureTangToc && sucmanhTangToc.dangHienThi())
+    {
+        sucmanhTangToc.ve(renderer, textureTangToc);
+    }
+
+    if (textureTangMang && sucmanhTangMang.dangHienThi())
+    {
+        sucmanhTangMang.ve(renderer, textureTangMang);
+    }
     if(checkno)
     {
         SDL_SetTextureBlendMode(bomtexture, SDL_BLENDMODE_BLEND);
@@ -480,14 +521,17 @@ void Game::velenmanhinh()
     }
     else
     {
+        static int i = 1;
         SDL_Event e;
 
-        for (Ghost &ghost : ghosts)
+        for(Ghost &ghost : ghosts)
         {
-            mang = ghost.winORlost(pacman,mang);
-            if (mang == 0)
+            int mangconlai =mang - ghost.winORlost(pacman, mang, solanchet);
+
+            if (mangconlai == 0)
             {
                 Mix_PlayMusic(amthanhlost, 0);
+
                 SDL_RenderCopy(renderer, losetexture , NULL, NULL);
                 SDL_RenderPresent(renderer);
 
@@ -502,8 +546,7 @@ void Game::velenmanhinh()
                             running = false;
                             waitingForEvent = false;
                         }
-                        else if (e.type == SDL_MOUSEBUTTONDOWN)
-                        {
+                        else if (e.type == SDL_MOUSEBUTTONDOWN) {
                             int mouseX, mouseY;
                             SDL_GetMouseState(&mouseX, &mouseY);
 
@@ -515,6 +558,7 @@ void Game::velenmanhinh()
                                 waitingForEvent = false;
                             }
 
+                            // Kiểm tra bấm vào nút "MENU"
                             if (mouseX >= menurect.x && mouseX <= menurect.x + menurect.w &&
                                 mouseY >= menurect.y && mouseY <= menurect.y + menurect.h)
                             {
@@ -526,7 +570,7 @@ void Game::velenmanhinh()
                     }
                 }
             }
-            else if (i == mang)
+            else if (i == solanchet)
             {
                 pacman.x = 800 / 2 + 50;
                 pacman.y = (800 - 100) / 2 + 50;
@@ -667,14 +711,22 @@ void Game::hoichieu()
 {
     if (!boolbom)
     {
-        int thoigian = (SDL_GetTicks() - moctg);
+        int thoigian = SDL_GetTicks() - moctg;
         tgconlai = (timebom - thoigian) / 1000;
+
+        if (tgconlai < 0) tgconlai = 0;
+
         if (thoigian >= timebom)
         {
             boolbom = true;
             tgconlai = 0;
         }
     }
+    else
+    {
+        tgconlai = 0;
+    }
+    //diemvamangvahoichieu(foods.score, mang - solanchet, tgconlai);
 }
 
 void Game::reset()

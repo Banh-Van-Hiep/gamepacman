@@ -17,7 +17,7 @@ public:
     void capnhatvitri(SDL_Rect pacman);
     bool kiemtravacham(int x, int y);
     void ve(SDL_Renderer* renderer, SDL_Texture* ghosttexture);
-    int winORlost(SDL_Rect pacman,int &mang);
+    int winORlost(SDL_Rect pacman,int &mang, int &slc);
     void changewaitingtime(int &waitingtime1, const Foods &food);
 private:
     Uint32 lastUpdateTime;
