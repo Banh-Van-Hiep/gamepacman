@@ -80,15 +80,26 @@ void Ghost::ve(SDL_Renderer* renderer, SDL_Texture* ghosttexture)
     SDL_RenderCopy(renderer, ghosttexture, &numframe[framehientai], &rectghost);
 }
 
-int Ghost::winORlost(SDL_Rect pacman, int &mang, int &slc)
+int Ghost::winORlost(SDL_Rect &pacman, int &mang, int &slc, Uint32 &lastCollisionTime, int &wf2)
 {
-        if(SDL_HasIntersection(&rectghost,&pacman))
+    Uint32 now = SDL_GetTicks();
+    if (SDL_HasIntersection(&rectghost, &pacman))
+    {
+
+        if (now - lastCollisionTime > 2000)
         {
             Mix_PlayChannel(2, amthanhdie, 0);
+            pacman.x = 800 / 2 + 50;
+            pacman.y = (800 - 100) / 2 + 50;
             slc++;
-            std::cout<<slc;
+            wf2--;
+
+            lastCollisionTime = now;
+            std::cout << slc << " lai chet, mang con lai: " << mang << std::endl;
         }
-        return slc;
+    }
+
+    return slc;
 }
 
 void Ghost::capnhatvitri(SDL_Rect pacman)
@@ -128,7 +139,7 @@ void Ghost::vt(int X, int Y)
 }
 void Ghost::changewaitingtime(int &waitingtime1, const Foods &food)
 {
-    if (food.food.size() <= 200)
+    if (food.food.size() <= 100)
     {
         waitingtime2 = 14;
         waitingtime1 = 10;

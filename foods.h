@@ -3,12 +3,12 @@
 
 #include <SDL.h>
 #include<vector>
+extern int score;
 
 class Foods
 {
 public:
     Foods();
-    int score = 0;
     void khoitaofoods();
     void draw(SDL_Renderer* renderer,SDL_Texture* foodtexture);
     bool winORlost();

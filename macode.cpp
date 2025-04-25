@@ -282,21 +282,20 @@ void Game::xulysukien()
         huongMoi = huongHienTai;
     }
 }
-//cap nhat trang thai
+
 void Game::capnhat()
 {
     hoichieu();
     Uint32 now = SDL_GetTicks();
-
     sucmanhTangToc.capNhat(now);
     sucmanhTangMang.capNhat(now);
-
     sucmanhTangToc.xuLyAn(pacman, now);
     if (sucmanhTangToc.daAn()) {
         tocdo = 3;
     } else {
         tocdo = 2;
     }
+
     sucmanhTangMang.xuLyAn(pacman, now);
     if (sucmanhTangMang.daAn()) {
         if (mang < 5) {
@@ -305,42 +304,20 @@ void Game::capnhat()
         sucmanhTangMang.sauKhiAn(now);
     }
     foods.checkeating(pacman);
-    for (auto& g : ghosts)
-    {
+    for (auto& g : ghosts) {
         g.changewaitingtime(waitingtime1, foods);
         g.capnhatvitri(pacman);
     }
+
     if (!Mix_PlayingMusic()) {
         Mix_PlayMusic(amthanhgame, -1);
     }
-    if (checkno)
-    {
-        if ((SDL_GetTicks() - batdauno) > 400)
-        {
+    if (checkno) {
+        if ((SDL_GetTicks() - batdauno) > 400) {
             checkno = false;
         }
     }
-    if (foods.winORlost())
-    {
-        Mix_HaltMusic();
-        SDL_Event e;
-        velenmanhinh();
-
-        bool wait = true;
-        while (wait)
-        {
-            while (SDL_PollEvent(&e))
-            {
-                if (e.type == SDL_QUIT || e.type == SDL_KEYDOWN)
-                    wait = false;
-            }
-        }
-
-        choitiep = false;
-        running = false;
-    }
 }
-//diem
 void Game::diemvamangvahoichieu(int score, int lifes, int cooldown)
 {
     std::string diem = std::to_string(score);
@@ -446,7 +423,7 @@ void Game::velenmanhinh()
     }
     if(fontScore)
     {
-        diemvamangvahoichieu(foods.score, mang-solanchet,tgconlai);
+        diemvamangvahoichieu(score, mang-solanchet,tgconlai);
         SDL_RenderCopy(renderer, scoretexture, NULL, &scorerect);
         SDL_RenderCopy(renderer, lifetexture, NULL, &liferect);
         SDL_RenderCopy(renderer, cooldowntexture, NULL, &cooldownRect);
@@ -477,11 +454,12 @@ void Game::velenmanhinh()
 
     static int i = 1;
     bool reseti = false;
+
     if (foods.winORlost())
     {
         SDL_Event e;
         Mix_PlayMusic(amthanhwin, 0);
-        SDL_RenderCopy(renderer, wintexture , NULL, NULL);
+        SDL_RenderCopy(renderer, wintexture, NULL, NULL);
         SDL_RenderPresent(renderer);
 
         bool waitingForEvent = true;
@@ -494,26 +472,31 @@ void Game::velenmanhinh()
                     choitiep = false;
                     running = false;
                     waitingForEvent = false;
+                    break;
                 }
                 else if (e.type == SDL_MOUSEBUTTONDOWN)
                 {
                     int mouseX, mouseY;
                     SDL_GetMouseState(&mouseX, &mouseY);
 
+                    // Khi bấm "Continue", tiếp tục trò chơi
                     if (mouseX >= continuerect.x && mouseX <= continuerect.x + continuerect.w &&
                         mouseY >= continuerect.y && mouseY <= continuerect.y + continuerect.h)
-                    {
-                        choitiep = false;
-                        running = false;
-                        waitingForEvent = false;
-                    }
+                        {
+                            Mix_HaltMusic();
+                            reset(); // Reset toàn bộ trạng thái trò chơi
+                            waitingForEvent = false; // Thoát khỏi vòng lặp sự kiện
+                            break;
+                        }
 
+                    // Khi bấm "Menu", kết thúc trò chơi
                     if (mouseX >= menurect.x && mouseX <= menurect.x + menurect.w &&
                         mouseY >= menurect.y && mouseY <= menurect.y + menurect.h)
                     {
                         choitiep = false;
                         running = false;
                         waitingForEvent = false;
+                        break;
                     }
                 }
             }
@@ -524,15 +507,16 @@ void Game::velenmanhinh()
         static int i = 1;
         SDL_Event e;
 
-        for(Ghost &ghost : ghosts)
+        for (Ghost &ghost : ghosts)
         {
-            int mangconlai =mang - ghost.winORlost(pacman, mang, solanchet);
+            static Uint32 lastCollisionTime = 0;
+            int mangconlai = mang - ghost.winORlost(pacman, mang, solanchet, lastCollisionTime, waitingtime2);
 
             if (mangconlai == 0)
             {
                 Mix_PlayMusic(amthanhlost, 0);
 
-                SDL_RenderCopy(renderer, losetexture , NULL, NULL);
+                SDL_RenderCopy(renderer, losetexture, NULL, NULL);
                 SDL_RenderPresent(renderer);
 
                 bool waitingForEvent = true;
@@ -545,26 +529,31 @@ void Game::velenmanhinh()
                             choitiep = false;
                             running = false;
                             waitingForEvent = false;
+                            break;
                         }
-                        else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                        else if (e.type == SDL_MOUSEBUTTONDOWN)
+                        {
                             int mouseX, mouseY;
                             SDL_GetMouseState(&mouseX, &mouseY);
 
+                            // Khi bấm "Continue", tiếp tục trò chơi
                             if (mouseX >= continuerect.x && mouseX <= continuerect.x + continuerect.w &&
                                 mouseY >= continuerect.y && mouseY <= continuerect.y + continuerect.h)
                             {
-                                choitiep = false;
-                                running = false;
-                                waitingForEvent = false;
+                                Mix_HaltMusic();
+                                reset(); // Reset toàn bộ trạng thái trò chơi
+                                waitingForEvent = false; // Thoát khỏi vòng lặp sự kiện
+                                break;
                             }
 
-                            // Kiểm tra bấm vào nút "MENU"
+                            // Khi bấm "Menu", kết thúc trò chơi
                             if (mouseX >= menurect.x && mouseX <= menurect.x + menurect.w &&
                                 mouseY >= menurect.y && mouseY <= menurect.y + menurect.h)
                             {
                                 choitiep = false;
                                 running = false;
                                 waitingForEvent = false;
+                                break;
                             }
                         }
                     }
@@ -572,18 +561,17 @@ void Game::velenmanhinh()
             }
             else if (i == solanchet)
             {
-                pacman.x = 800 / 2 + 50;
-                pacman.y = (800 - 100) / 2 + 50;
                 i++;
             }
 
             SDL_RenderPresent(renderer);
         }
     }
+
     if (reseti)
     {
         i = 1;
-        std::cout<<i;
+        std::cout << i;
         reseti = false;
     }
 }
@@ -726,19 +714,37 @@ void Game::hoichieu()
     {
         tgconlai = 0;
     }
-    //diemvamangvahoichieu(foods.score, mang - solanchet, tgconlai);
 }
 
-void Game::reset()
-{
-    pacman.x = (800)/2+50;
-    pacman.y = (800-100)/2+50;
-    pacman.w = 20;
-    pacman.h = 20;
-    solanchet = 0;
+void Game::reset() {
+    pacman.x = 450;
+    pacman.y = 420;
+    pacman.w = tile_size / 2;
+    pacman.h = tile_size / 2;
+    huongMoi = NONE;
+    huongHienTai = NONE;
+
     mang = 3;
-    tgconlai = timebom;
-    pacmanFrameIndex = 0;
-    animationFrame = 0;
-    foods.score = 0;
+    solanchet = 0;
+    tgconlai = 0;
+    score = 0;
+    waitingtime1 = 15;
+    waitingtime2 = 18;
+    boolbom = true;
+    checkno = false;
+
+    // Khởi tạo lại ghosts
+    const int numghost = 5;
+    ghosts.clear();
+    for (int i = 0; i < numghost; i++) {
+        Ghost g;
+        g.khoitaoghost(i);
+        ghosts.push_back(g);
+        std::cout << "Ghost " << i << " đã được khởi tạo." << std::endl;
+    }
+
+    foods.food.clear();
+    foods.khoitaofoods();
+
+    running = true;
 }
