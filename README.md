@@ -1,6 +1,5 @@
 1. PACMAN
-  Thử nghiệm game: https://drive.google.com/file/d/1nfBHIsHad_ivxUdSbhoRx7DSO4ARGN_E/view?usp=sharing 
-                   https://drive.google.com/file/d/1QOfL6K-boqWZmrdiMZR7lwlvVUd64hFv/view?usp=sharing
+  Thử nghiệm game: https://drive.google.com/file/d/17jG84l2Elz8p1WN2pnVVYySOd1QXHabd/view?usp=sharing
 2. Giới thiệu game
   Pac-Man Clone là một trò chơi thuộc thể loại arcade cổ điển. Đắm mình vào mê cung đầy thử thách, bạn sẽ điều 
   khiển nhân vật Pac-Man ăn thức ăn và né tránh các Ghosts. Hãy cố gắng hết sức để sống sót, thu thập các vật phẩm sức 
@@ -64,7 +63,7 @@
     Xử lý ăn: Khi Pac-Man ăn sức mạnh, kích hoạt hiệu ứng và tăng tốc trong một khoảng thời gian.
     Đặt lại: Đưa trạng thái sức mạnh về mặc định khi cần.
 4. Cách chơi: Người chơi nhấn 4 phím mũi tên trên màn hình để di chuyển và chạy khỏi sự truy đuổi của
-   Ghost (quái vật), đồng thời cố gắng ăn hết tất cả thục ăn trên bản đồ. Người chơi có thể kích hoạt bom
+   Ghost (quái vật), đồng thời cố gắng ăn hết tất cả thục ăn trên bản đồ. Người chơi có thể kích hoạt bom(phím h)
    để đẩy Ghost về giữa bản đồ (chỉ khi trong bán kính bom và thời gian hồi bom đã về 0). Sau mỗi lần không
    có thời gian nhất định, sẽ có 2 viên sức mạnh xuất hiện, với chức năng tăng mạng và tăng tốc chạy cho
    Pac-Man (nếu không ăn, viên sức mạnh sẽ biến mất). Lưu ý, mỗi khi Ghost giết được Pac-Man, Ghost sẽ tăngtốc chạy.
